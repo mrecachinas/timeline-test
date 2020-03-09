@@ -1,0 +1,28 @@
+.searchbar {
+    width: 40%;
+    margin-top: 15px;
+    z-index: 100;
+    color: black;
+    text-align: left;
+}
+
+.searchbar:focus {
+    outline:none;
+}
+
+.tags {
+
+}
+
+span.tag {
+    font-size: 0.7em;
+    padding: 5px 5px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    margin:2px;
+}
+
+span.tag:hover {
+    border-color: gray;
+    cursor: pointer;
+}

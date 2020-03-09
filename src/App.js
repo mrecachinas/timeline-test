@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect, useState} from 'react';
+import SearchBar from './SearchBar.js';
+import Timeline from './Timeline.js';
+import {generateData} from './FakeData';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [timelineData, setTimelineData] = useState({});
+  useEffect(() => {
+    console.log("IN HOOK")
+    const timelineData = generateData(50);
+    setTimelineData(timelineData);
+  }, []);
+
+  console.log(timelineData);
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <SearchBar
+          timelineData={timelineData}
+          setTimelineData={setTimelineData}
+        />
       </header>
+      { Object.keys(timelineData).length !== 0 ? <Timeline eventsJson={timelineData} /> : null }
     </div>
   );
 }
