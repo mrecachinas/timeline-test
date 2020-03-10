@@ -1,17 +1,22 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import AsyncSelect from 'react-select/async';
-import {difference} from 'lodash';
-import {promiseOptions, generateData} from './FakeData';
+import {intersection} from 'lodash';
+import {promiseOptions} from './FakeData';
 import './SearchBar.css';
 
 const handleChange = (timelineData, setTimelineData) => {
   return selectedOption => {
-    if (timelineData && timelineData.length === 0) {
+    if (selectedOption === null) {
+      setTimelineData(timelineData);
+    } else if (timelineData && timelineData.length === 0) {
       return;
+    } else {
+      const selectedValues = selectedOption.map(opt => opt.value);
+      const events = timelineData.events.filter(
+        td => intersection(td.choice, selectedValues).length === selectedValues.length
+      );
+      setTimelineData({events});
     }
-    const selectedValues = selectedOption.map(opt => opt.value);
-    const events = timelineData.events.filter(td => difference(td.choice, selectedValues).length > 0);
-    setTimelineData({events});
   };
 };
 

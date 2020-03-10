@@ -6,22 +6,22 @@ import './App.css';
 
 const App = () => {
   const [timelineData, setTimelineData] = useState({});
+  const [visibleTimelineData, setVisibleTimelineData] = useState({});
   useEffect(() => {
-    console.log("IN HOOK")
     const timelineData = generateData(50);
     setTimelineData(timelineData);
+    setVisibleTimelineData(timelineData);
   }, []);
 
-  console.log(timelineData);
   return (
     <div className="App">
       <header className="App-header">
         <SearchBar
           timelineData={timelineData}
-          setTimelineData={setTimelineData}
+          setTimelineData={setVisibleTimelineData}
         />
       </header>
-      { Object.keys(timelineData).length !== 0 ? <Timeline eventsJson={timelineData} /> : null }
+      { Object.keys(visibleTimelineData).length !== 0 ? <Timeline eventsJson={visibleTimelineData} /> : null }
     </div>
   );
 }

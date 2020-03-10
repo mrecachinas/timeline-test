@@ -2,10 +2,11 @@ import {lorem} from 'faker';
 import {sampleSize, random} from 'lodash';
 
 /**
- * 
- * @param {string} text 
- * @param {Array} tags 
- * @returns {string}
+ * Convert text and tags to HTML for the slides.
+ *
+ * @param {string} text Sentences/paragraphs
+ * @param {Array} tags List of tags to format below the text
+ * @returns {string} HTML-ified string containing the text and tags
  */
 const prepareText = (text, tags) => {
   const formattedTagsList = tags.sort()
@@ -15,16 +16,6 @@ const prepareText = (text, tags) => {
   return `${text}${formattedTags}`;
 }
 
-const CHOICES = ["foo", "bar", "baz", "bagel", "donut", "croissant"];
-const CHOICES_OBJ = [
-  {label: "foo", value: "foo"},
-  {label: "bar", value: "bar"},
-  {label: "baz", value: "baz"},
-  {label: "bagel", value: "bagel"},
-  {label: "donut", value: "donut"},
-  {label: "croissant", value: "croissant"},
-]
-
 /**
  * Generate numEvents number of events with which to seed the timeline.
  *
@@ -33,9 +24,10 @@ const CHOICES_OBJ = [
  */
 const generateData = numEvents => {
   const events = [];
+  const CHOICES = ["foo", "bar", "baz", "bagel", "donut", "croissant"];
   for (let i = 0; i < numEvents; i++) {
     const highlight = random(0, 1) === 1 ? "highlight" : "update";
-    const choice = sampleSize(CHOICES, 3);
+    const choice = sampleSize(CHOICES, 3).concat(highlight);
     events.push({
       start_date: {
         year: random(2019, 2020),
@@ -54,10 +46,31 @@ const generateData = numEvents => {
   return {events};
 };
 
+/**
+ * Filter options based on what's entered in search bar.
+ *
+ * @param {string} inputValue Value entered into the search bar
+ * @returns {Array} Filtered array of choices
+ */
 const filterChoices = inputValue => {
-  return CHOICES_OBJ.filter(i => i.label.toLowerCase().includes(inputValue.toLowerCase()));
+  return [
+    {label: "foo", value: "foo"},
+    {label: "bar", value: "bar"},
+    {label: "baz", value: "baz"},
+    {label: "bagel", value: "bagel"},
+    {label: "donut", value: "donut"},
+    {label: "croissant", value: "croissant"},
+    {label: "highlight", value: "highlight"},
+    {label: "update", value: "update"},
+  ].filter(i => i.label.toLowerCase().includes(inputValue.toLowerCase()));
 };
 
+/**
+ * Fake an asynchronous call for collecting options
+ * for the search bar.
+ *
+ * @param {string} inputValue Value entered into the search bar
+ */
 const promiseOptions = inputValue =>
   new Promise(resolve => {
     setTimeout(() => {
