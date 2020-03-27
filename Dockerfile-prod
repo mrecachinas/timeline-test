@@ -1,0 +1,15 @@
+FROM node:13-alpine as builder
+
+WORKDIR /usr/src/app
+
+COPY package.json .
+
+RUN yarn install -s && yarn global add -s serve
+
+COPY . .
+
+RUN yarn run build
+
+ENTRYPOINT ["serve", "-s", "build"]
+
+EXPOSE 5000
